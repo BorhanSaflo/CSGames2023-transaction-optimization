@@ -1,49 +1,39 @@
-# Importing the yfinance package
 import yfinance as yf
+
+budget = 1000000
 
 # Set the start and end date
 start_date = '2023-01-01'
 end_date = '2023-02-01'
 
-# Set the ticker
-tickerList = ['AAl', 'DAL', 'UAL', 'LUV', 'HA']
+# Set the ticker list
+tickerList = ['AAL', 'DAL', 'UAL', 'LUV', 'HA']
 
-# Get the data
+# Initialize portfolio with all money in cash
+portfolio = {'cash': budget, 'stock': tickerList[0]}
+
+# Track transactions made
+transactions = []
+
+# Get the data for each ticker and calculate predicted price increase for each day based on open prices
 tickerData = {}
-
+percentChange = {}
 for ticker in tickerList:
     data = yf.download(ticker, start_date, end_date)
     prices = []
     for price in data["Open"]:
         prices.append(price)
     tickerData[ticker] = prices
+    
+    #array of the percent change in price for each day
+    percentChange[ticker] = []
+    for i in range(1, len(prices)):
+        percentChange[ticker].append((prices[i] - prices[i-1]) / prices[i-1])
+    
+    print(ticker)
+    print()
+    print(percentChange[ticker])
+    print("------------")
+    
 
-# print(tickerData)
-
-results = []
-
-for key in tickerData:
-    values = tickerData[key]
-    l = 0   
-    maxProfit = 0
-    buyDay = 0
-    sellDay = 0
-    # Increment right ptr every time
-    # move left ptr when l > r
-    for r in range(1, len(values)):
-        if(values[l] > values[r]):
-            l = r
-        else:
-            # Check if max profit is there
-            diff = values[r] - values[l]
-            if(diff > maxProfit):
-                maxProfit = diff
-                buyDay = l
-                sellDay = r
-
-    results.append([key, maxProfit, buyDay, sellDay])
-
-
-print(results)
-
-
+        
