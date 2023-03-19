@@ -1,3 +1,5 @@
+import json
+import requests
 import yfinance as yf
 
 budget = 1000000
@@ -72,18 +74,9 @@ temp["action"] = "BUY"
 temp["ticker"] = percentSymbol[s][0]
 output.append(temp)
 
+# x = requests.post("https://api.csgames2023.sandbox.croesusfin.cloud/swagger/iCroesusValidation", json = output)
 
+# print(x)
 
-
-
-
-
-
-
-
-
-        
-
-    
-
-        
+with open('output.json', 'w') as f:
+    f.write(str(output))
