@@ -12,8 +12,14 @@ tickerList = ['AAL', 'DAL', 'UAL', 'LUV', 'HA']
 # Initialize portfolio with all money in cash
 portfolio = {'cash': budget, 'stock': tickerList[0]}
 
+# dates = []
+
 # Track transactions made
 transactions = []
+
+output = []
+
+dates = []
 
 # Get the data for each ticker and calculate predicted price increase for each day based on open prices
 tickerData = {}
@@ -21,6 +27,9 @@ percentChange = {}
 for ticker in tickerList:
     data = yf.download(ticker, start_date, end_date)
     prices = []
+    for x in list(data.index):
+        dates.append(x.strftime("%Y-%m-%d"))
+
     for price in data["Open"]:
         prices.append(price)
     tickerData[ticker] = prices
@@ -32,6 +41,10 @@ for ticker in tickerList:
     
 
 # Loop through each day
+
+percentSymbol = []
+
+
 for i in range(len(percentChange[tickerList[0]])):
     highestChange = -1
     highestChangeTicker = ""
@@ -40,9 +53,35 @@ for i in range(len(percentChange[tickerList[0]])):
         if percentChange[ticker][i] > highestChange:
             highestChange = percentChange[ticker][i]
             highestChangeTicker = ticker
-    print("The highest change between day " + str(i) + " and day " + str(i+1) + " is " + str(highestChange) + " for " + highestChangeTicker)
+    percentSymbol.append([highestChangeTicker, highestChange])
+    # print("The highest change between day " + str(i) + " and day " + str(i+1) + " is " + str(highestChange) + " for " + highestChangeTicker)
         
-    
+
+print("[0-1], [1-2], [2-3], ...")
+print(percentSymbol)
+
+# Get Start Point
+s = 0
+while(percentSymbol[s][1] < 0):
+    s += 1
+
+# Update Output for BUY
+temp = {}
+temp["date"] = dates[s]
+temp["action"] = "BUY"
+temp["ticker"] = percentSymbol[s][0]
+output.append(temp)
+
+
+
+
+
+
+
+
+
+
+
         
 
     
