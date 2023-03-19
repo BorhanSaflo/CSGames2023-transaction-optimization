@@ -30,10 +30,21 @@ for ticker in tickerList:
     for i in range(1, len(prices)):
         percentChange[ticker].append((prices[i] - prices[i-1]) / prices[i-1])
     
-    print(ticker)
-    print()
-    print(percentChange[ticker])
-    print("------------")
+
+# Loop through each day
+for i in range(len(percentChange[tickerList[0]])):
+    highestChange = -1
+    highestChangeTicker = ""
+
+    for ticker in tickerList:
+        if percentChange[ticker][i] > highestChange:
+            highestChange = percentChange[ticker][i]
+            highestChangeTicker = ticker
+    print("The highest change between day " + str(i) + " and day " + str(i+1) + " is " + str(highestChange) + " for " + highestChangeTicker)
+        
+    
+        
+
     
 
         
